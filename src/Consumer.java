@@ -1,19 +1,44 @@
-public class Consumer {
+public class Consumer implements Runnable {
 
-    private String Resource1 = " Prato diario";
+    int platesConsumed;
+    private Restaurant restaurant;
+
+    public Consumer(Restaurant restaurant, int platesConsumed) {
+        this.restaurant = restaurant;
+        this.platesConsumed = platesConsumed;
+    }
+
+    @Override
+    public void run() {
 
 
-    Thread thread1 = new Thread(() -> {
-        synchronized (Resource1) {
+        int i = 0;
+        while (i != platesConsumed) {
+            synchronized (restaurant) {
 
-            try {
-                eat();
-                Thread.sleep(100); // Simulate some work (and give time for Thread 2 to lock Resource 2)
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
+                String test = restaurant.consumePlate();
+                if (test != null) {
+                    System.out.println("Client eat : " + test);
+
+                    i++;
+                }
+
             }
-
-
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
         }
-    });
+
+
+    }
+
+
+    public void start() {
+
+        Thread thread = new Thread(this);
+        thread.start();
+
+    }
 }

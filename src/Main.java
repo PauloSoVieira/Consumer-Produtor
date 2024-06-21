@@ -1,22 +1,26 @@
-public class Main {
+public class Main extends Thread {
     public static void main(String[] args) {
-        public class DeadlockExample {
 
-            // Two resource objects
-            private static final Object Resource1 = new Object();
-            private static final Object Resource2 = new Object();
+        Restaurant restaurant = new Restaurant(5);
 
-            public static void main(String[] args) {
-                // Thread 1 tries to lock Resource1 then Resource2
+        // restaurant.addPlates("Bacalhau");
 
 
-                // Thread 2 tries to lock Resource2 then Resource1
+        Cozinheiro cozinheiro = new Cozinheiro(restaurant);
+        Cozinheiro cozinheiro2 = new Cozinheiro(restaurant);
+        Consumer consumer = new Consumer(restaurant, 6);
 
+        cozinheiro.start();
+        cozinheiro2.start();
 
-                thread1.start();
-                thread2.start();
-            }
-        }
+        consumer.start();
+
+        // System.out.println("teste " + restaurant.getPlates());
+
+        //  System.out.println(restaurant.getPlates().size());
 
     }
 }
+
+
+
